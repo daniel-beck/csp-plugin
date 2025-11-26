@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>5.22</version>
+    <version>5.28</version>
     <relativePath />
   </parent>
 
@@ -30,29 +30,39 @@
   </scm>
 
   <properties>
-    <revision>1</revision>
+    <revision>2</revision>
     <changelist>999999-SNAPSHOT</changelist>
-    <jenkins.baseline>2.479</jenkins.baseline>
-    <jenkins.version>${jenkins.baseline}.3</jenkins.version>
+    <jenkins.baseline>2.528</jenkins.baseline>
+    <jenkins.version>2.539</jenkins.version>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
     <spotless.check.skip>false</spotless.check.skip>
-    <ban-junit4-imports.skip>false</ban-junit4-imports.skip>
+    <!-- All this plugin does is use/implement Beta API in core, SuppressRestrictedWarnings would be everywhere -->
+    <useBeta>true</useBeta>
+    <hpi.compatibleSinceVersion>2.0</hpi.compatibleSinceVersion>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.jenkins.tools.bom</groupId>
+        <artifactId>bom-${jenkins.baseline}.x</artifactId>
+        <version>5701.va_b_018a_a_6b_0d3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
-      <groupId>org.kohsuke</groupId>
-      <artifactId>access-modifier-suppressions</artifactId>
-      <version>${access-modifier-checker.version}</version>
-      <!-- Not needed at runtime -->
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <!-- Upper bounds and comes from core -->
-          <groupId>org.kohsuke</groupId>
-          <artifactId>access-modifier-annotation</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>io.jenkins</groupId>
+      <artifactId>configuration-as-code</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.jenkins.configuration-as-code</groupId>
+      <artifactId>test-harness</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
